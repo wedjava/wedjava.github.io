@@ -1,0 +1,376 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>React(生命周期,脚手架) | 小马の博客</title><meta name="keywords" content="React 生命周期 脚手架"><meta name="author" content="Kun Kun"><meta name="copyright" content="Kun Kun"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="五、生命周期   组件从创建到死亡它会经历一些特定的阶段  React 组件中包含一系列钩子函数(生命周期回调函数),会在特定的时刻调用  我们在定义组件时,会在特定的生命周期回调函数中,做特定的工作   1、React 生命周期(旧) 各个生命周期钩子调用顺序  初始化阶段:由 ReactDOM.render()触发 –初次渲染  constructor()  compinentWillMoun">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React(生命周期,脚手架)">
+<meta property="og:url" content="https://ma_jinkun.gitee.io/2021/12/30/react/react-cycle/index.html">
+<meta property="og:site_name" content="小马の博客">
+<meta property="og:description" content="五、生命周期   组件从创建到死亡它会经历一些特定的阶段  React 组件中包含一系列钩子函数(生命周期回调函数),会在特定的时刻调用  我们在定义组件时,会在特定的生命周期回调函数中,做特定的工作   1、React 生命周期(旧) 各个生命周期钩子调用顺序  初始化阶段:由 ReactDOM.render()触发 –初次渲染  constructor()  compinentWillMoun">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2021/12/30/OjiswQgfeP3Jm4S.jpg">
+<meta property="article:published_time" content="2021-12-30T01:58:45.000Z">
+<meta property="article:modified_time" content="2021-12-30T09:49:58.138Z">
+<meta property="article:author" content="Kun Kun">
+<meta property="article:tag" content="React 生命周期 脚手架">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2021/12/30/OjiswQgfeP3Jm4S.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://ma_jinkun.gitee.io/2021/12/30/react/react-cycle/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'React(生命周期,脚手架)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-30 17:49:58'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-card-history/baiduhistory/css/main.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2021/12/28/uBIDZUEFrpsCvH7.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音樂</span></a></div><div class="menus_item"><a class="site-page" href="/contact/"><i class="fa-fw far fa-comments"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2021/12/30/OjiswQgfeP3Jm4S.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">小马の博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音樂</span></a></div><div class="menus_item"><a class="site-page" href="/contact/"><i class="fa-fw far fa-comments"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">React(生命周期,脚手架)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-12-30T01:58:45.000Z" title="发表于 2021-12-30 09:58:45">2021-12-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-12-30T09:49:58.138Z" title="更新于 2021-12-30 17:49:58">2021-12-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/React%E5%AD%A6%E4%B9%A0-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F-%E8%84%9A%E6%89%8B%E6%9E%B6/">React学习  生命周期  脚手架</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="React(生命周期,脚手架)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="五、生命周期"><a href="#五、生命周期" class="headerlink" title="五、生命周期"></a>五、生命周期</h2><blockquote>
+<ol>
+<li> 组件从创建到死亡它会经历一些特定的阶段</li>
+<li> React 组件中包含一系列钩子函数(生命周期回调函数),会在特定的时刻调用</li>
+<li> 我们在定义组件时,会在特定的生命周期回调函数中,做特定的工作</li>
+</ol>
+</blockquote>
+<h3 id="1、React-生命周期-旧"><a href="#1、React-生命周期-旧" class="headerlink" title="1、React 生命周期(旧)"></a>1、React 生命周期(旧)</h3><blockquote>
+<p>各个生命周期钩子调用顺序</p>
+<ol>
+<li><p>初始化阶段:由 ReactDOM.render()触发 –初次渲染</p>
+<ul>
+<li><p>constructor()</p>
+</li>
+<li><p>compinentWillMount()</p>
+</li>
+<li><p>render()</p>
+</li>
+<li><p>componentDidMount() ==&gt;<code>常用</code> 组件将要渲染</p>
+</li>
+</ul>
+<p> 一般在这个钩子中做一些初始化的事情,如:开启定时器,发送网络请求,订阅消息等</p>
+</li>
+<li><p>更新阶段:由组件内部的 this.setState()或者父组件的 render 触发</p>
+<ul>
+<li>shouldComponentUpdate() 组件应该更新</li>
+<li>componentWillUpdate() 组件将要更新</li>
+<li>render() ===&gt;<code>必须使用</code>的一个</li>
+<li>componentDidUpdate() 组件将要更新</li>
+</ul>
+</li>
+<li><p>卸载组件:由 ReactDOM.unmountComponentAtNode(<code>卸载节点上的组件</code>)触发</p>
+<ul>
+<li>componentWillUnmount() ===&gt;<code>常用</code> 组件将要卸载</li>
+</ul>
+<p> 一般在这个钩子中做一些首位的事情,如:关闭定时器,取消订阅等</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="2、React-生命周期-新"><a href="#2、React-生命周期-新" class="headerlink" title="2、React 生命周期(新)"></a>2、React 生命周期(新)</h3><blockquote>
+<ol>
+<li><p>初始化阶段:由 ReactDOM.render()触发 —初次渲染</p>
+<ul>
+<li>constructor()</li>
+<li>getDerivedStateFromProps() 从 Props 获得派生状态</li>
+<li>render()</li>
+<li>componentDidMount() ====&gt;<code>常用</code></li>
+</ul>
+</li>
+<li><p>更新阶段:由组件内部的 this.setState()或者父组件的 render 触发</p>
+<ul>
+<li>getDerivedStateFromProps() 从 Props 获得派生状态</li>
+<li>shouldComponentUpdate() 组件应该更新</li>
+<li>render()</li>
+<li>getSnapshotBeforeUpdate() 在更新前获得快照</li>
+<li>componentDidUpdate()</li>
+</ul>
+</li>
+<li><p>卸载组件:由 ReactDOM.unmountComponentAtNode()触发</p>
+<ul>
+<li>componentWillUnmount() ===&gt;<code>常用</code></li>
+</ul>
+<p> 一般在这个钩子中做一些收尾的事情,如:关闭定时器、取消订阅消息</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="3、重要的钩子"><a href="#3、重要的钩子" class="headerlink" title="3、重要的钩子"></a>3、重要的钩子</h3><blockquote>
+<ol>
+<li> render:初始化渲染或者更新渲染调用</li>
+<li> componentDidMount() :开启监听,发送 ajax 请求</li>
+<li> componentWillUnmount(): 做一些收尾工作,如:清理定时器</li>
+</ol>
+</blockquote>
+<h3 id="4、即将废弃的钩子"><a href="#4、即将废弃的钩子" class="headerlink" title="4、即将废弃的钩子"></a>4、即将废弃的钩子</h3><blockquote>
+<ol>
+<li> componentWillMount</li>
+<li> componentWillReceiveProps</li>
+<li> componentWillUpdate</li>
+</ol>
+<p><code>ps</code>:现在使用会出现警告,之后版本可能需要加上 UNSAFE_前缀才能使用,以后可能会被彻底废弃,不建议使用</p>
+<p>推测 React 团队认为提高使用成本将会间接影响我们,让我们去适应新的钩子,所以加上这个</p>
+</blockquote>
+<h2 id="六、react-vue-中的-key"><a href="#六、react-vue-中的-key" class="headerlink" title="六、react/vue 中的 key"></a>六、react/vue 中的 key</h2><blockquote>
+<p>经典面试题:</p>
+<p>1). react/vue 中的 key 有什么作用？（key 的内部原理是什么？）</p>
+<p>2). 为什么遍历列表时，key 最好不要用 index?</p>
+</blockquote>
+<h5 id="①-虚拟-DOM-中-key-的作用"><a href="#①-虚拟-DOM-中-key-的作用" class="headerlink" title="① 虚拟 DOM 中 key 的作用:"></a>① 虚拟 DOM 中 key 的作用:</h5><blockquote>
+<ol>
+<li><p> 简单的说:key 是虚拟 DOM 对象的标识,在更新显示时 key 起着极其重要的作用</p>
+</li>
+<li><p> 详细的说:当状态当中的数据发生变化时,react 会根据<code>新数据</code>生成<code>新的虚拟DOM</code>,随后 React 进行<code>新虚拟DOM</code>与<code>旧虚拟DOM</code>的 diff 比较,比较规则如下:</p>
+</li>
+<li><p>旧虚拟 DOM 中找到了与新虚拟 DOM 相同的 key：</p>
+<p> a)若虚拟 DOM 中内容没变,直接使用之前的真实 DOM</p>
+<p> b)若虚拟 DON 中的内容变了,则生成新的真实 DOM,随后替换掉页面中之前的真实 DOM</p>
+</li>
+<li><p>旧虚拟 DOM 中未找到与新虚拟 DOM 相同的 key</p>
+<p> 根据数据创建新的真实 DOM,随后渲染到页面</p>
+</li>
+</ol>
+</blockquote>
+<h5 id="②-用-index-作为-key-可能会引发的问题"><a href="#②-用-index-作为-key-可能会引发的问题" class="headerlink" title="② 用 index 作为 key 可能会引发的问题:"></a>② 用 index 作为 key 可能会引发的问题:</h5><blockquote>
+<ol>
+<li> 若对数据进行:逆序添加,逆序删除等破坏顺序操作:</li>
+</ol>
+<p>会产生没有必要的真实 DOM 更新 ==&gt;界面效果没问题,但是效率低</p>
+<ol start="2">
+<li> 如果结构中还包含输入类的 DOM:</li>
+</ol>
+<p>会产生错误 DOM 更新 ===&gt;界面有问题</p>
+<ol start="3">
+<li> 注意:</li>
+</ol>
+<p>如果不存在对数据的逆序添加、逆序删除等破坏顺序操作,仅用于渲染列表用于展示,使用 index 作为 key 是没有问题的</p>
+</blockquote>
+<h5 id="③-开发中如何选择-key"><a href="#③-开发中如何选择-key" class="headerlink" title="③ 开发中如何选择 key?"></a>③ 开发中如何选择 key?</h5><blockquote>
+<ol>
+<li> 最好使用每条数据的唯一标识作为 key,比如 id,手机号,身份证号,学号等</li>
+<li> 如果确定只是简单的展示诗句,用 index 也是可以的</li>
+</ol>
+</blockquote>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//慢动作回放----使用index索引值作为key</span></span><br><span class="line">		初始数据：</span><br><span class="line">				&#123;id:<span class="number">1</span>,name:&#x27;小张&#x27;,age:<span class="number">18</span>&#125;,</span><br><span class="line">				&#123;id:<span class="number">2</span>,name:&#x27;小李&#x27;,age:<span class="number">19</span>&#125;,</span><br><span class="line">		初始的虚拟DOM：</span><br><span class="line">				&lt;li key=<span class="number">0</span>&gt;小张--<span class="number">-18</span>&lt;input type=<span class="string">&quot;text&quot;</span>/&gt;&lt;/li&gt;</span><br><span class="line">				&lt;li key=<span class="number">1</span>&gt;小李--<span class="number">-19</span>&lt;input type=<span class="string">&quot;text&quot;</span>/&gt;&lt;/li&gt;</span><br><span class="line"></span><br><span class="line">		更新后的数据：</span><br><span class="line">				&#123;id:<span class="number">3</span>,name:&#x27;小王&#x27;,age:<span class="number">20</span>&#125;,</span><br><span class="line">				&#123;id:<span class="number">1</span>,name:&#x27;小张&#x27;,age:<span class="number">18</span>&#125;,</span><br><span class="line">				&#123;id:<span class="number">2</span>,name:&#x27;小李&#x27;,age:<span class="number">19</span>&#125;,</span><br><span class="line">		更新数据后的虚拟DOM：</span><br><span class="line">				&lt;li key=<span class="number">0</span>&gt;小王--<span class="number">-20</span>&lt;input type=<span class="string">&quot;text&quot;</span>/&gt;&lt;/li&gt;</span><br><span class="line">				&lt;li key=<span class="number">1</span>&gt;小张--<span class="number">-18</span>&lt;input type=<span class="string">&quot;text&quot;</span>/&gt;&lt;/li&gt;</span><br><span class="line">				&lt;li key=<span class="number">2</span>&gt;小李--<span class="number">-19</span>&lt;input type=<span class="string">&quot;text&quot;</span>/&gt;&lt;/li&gt;</span><br><span class="line"></span><br><span class="line">-----------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"><span class="comment">//慢动作回放----使用id唯一标识作为key</span></span><br><span class="line"></span><br><span class="line">		初始数据：</span><br><span class="line">				&#123;id:<span class="number">1</span>,name:&#x27;小张&#x27;,age:<span class="number">18</span>&#125;,</span><br><span class="line">				&#123;id:<span class="number">2</span>,name:&#x27;小李&#x27;,age:<span class="number">19</span>&#125;,</span><br><span class="line">		初始的虚拟DOM：</span><br><span class="line">				&lt;li key=<span class="number">1</span>&gt;小张--<span class="number">-18</span>&lt;input type=<span class="string">&quot;text&quot;</span>/&gt;&lt;/li&gt;</span><br><span class="line">				&lt;li key=<span class="number">2</span>&gt;小李--<span class="number">-19</span>&lt;input type=<span class="string">&quot;text&quot;</span>/&gt;&lt;/li&gt;</span><br><span class="line"></span><br><span class="line">		更新后的数据：</span><br><span class="line">				&#123;id:<span class="number">3</span>,name:&#x27;小王&#x27;,age:<span class="number">20</span>&#125;,</span><br><span class="line">				&#123;id:<span class="number">1</span>,name:&#x27;小张&#x27;,age:<span class="number">18</span>&#125;,</span><br><span class="line">				&#123;id:<span class="number">2</span>,name:&#x27;小李&#x27;,age:<span class="number">19</span>&#125;,</span><br><span class="line">		更新数据后的虚拟DOM：</span><br><span class="line">				&lt;li key=<span class="number">3</span>&gt;小王--<span class="number">-20</span>&lt;input type=<span class="string">&quot;text&quot;</span>/&gt;&lt;/li&gt;</span><br><span class="line">				&lt;li key=<span class="number">1</span>&gt;小张--<span class="number">-18</span>&lt;input type=<span class="string">&quot;text&quot;</span>/&gt;&lt;/li&gt;</span><br><span class="line">				&lt;li key=<span class="number">2</span>&gt;小李--<span class="number">-19</span>&lt;input type=<span class="string">&quot;text&quot;</span>/&gt;&lt;/li&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="Ⅱ-React脚手架"><a href="#Ⅱ-React脚手架" class="headerlink" title="Ⅱ-React脚手架"></a>Ⅱ-React脚手架</h1><blockquote>
+<ol>
+<li>xxx脚手架:用来帮助程序原快速创建一个基于xxx库的模板项目</li>
+</ol>
+<p>  a) 包含了所有需要的配置(语法检查,jsx编 译,devServer…)</p>
+<p>  b)下载好了所有相关的依赖</p>
+<p>  c) 可以直接运行一个简单效果</p>
+<ol start="2">
+<li><p>react提供了一个用于创建react项目的脚手架库:create-react-app</p>
+</li>
+<li><p>项目的整体技术架构为:react+webpack+es6+eslint</p>
+</li>
+<li><p>使用脚手架开发的项目的特点:模块化,组件化,工程化</p>
+</li>
+</ol>
+<p>此处需要webpack 相关知识点,我先去学习相关知识先(2-3晚)</p>
+</blockquote>
+<h3 id="1、创建项目并启动"><a href="#1、创建项目并启动" class="headerlink" title="1、创建项目并启动"></a>1、创建项目并启动</h3><blockquote>
+<ol>
+<li><p>全局安装:<code>npm i -g create-react-app</code></p>
+</li>
+<li><p>切换到想创建项目的目录,使用命令:<code>create-react-arr hello-react</code></p>
+</li>
+<li><p>进入项目文件夹</p>
+</li>
+<li><p>启动项目:<code>npm start</code></p>
+</li>
+</ol>
+</blockquote>
+<h3 id="2、react脚手架项目结构"><a href="#2、react脚手架项目结构" class="headerlink" title="2、react脚手架项目结构"></a>2、react脚手架项目结构</h3><blockquote>
+<p>public —- 静态资源文件夹</p>
+<p>​            favicon.icon —— 网站页签图标</p>
+<p>​            <strong>index.html ——–</strong> <strong>主页面</strong></p>
+<p>​            logo192.png ——- logo图</p>
+<p>​            logo512.png ——- logo图</p>
+<p>​            manifest.json —– 应用加壳的配置文件</p>
+<p>​            robots.txt ——– 爬虫协议文件</p>
+<p>src —- 源码文件夹</p>
+<p>​            App.css ——– App组件的样式</p>
+<p>​            <strong>App.js ——— App****组件</strong></p>
+<p>​            App.test.js —- 用于给App做测试</p>
+<p>​            index.css —— 样式</p>
+<p>​            <strong>index.js ——-</strong> <strong>入口文件</strong></p>
+<p>​            logo.svg ——- logo图</p>
+<p>​            reportWebVitals.js</p>
+<p>​                    — 页面性能分析文件(需要web-vitals库的支持)</p>
+<p>​            setupTests.js</p>
+<p>​                    —- 组件单元测试的文件(需要jest-dom库的支持)</p>
+</blockquote>
+<h3 id="3、功能界面的组件化编码流程"><a href="#3、功能界面的组件化编码流程" class="headerlink" title="3、功能界面的组件化编码流程"></a>3、功能界面的组件化编码流程</h3><blockquote>
+<ol>
+<li><p>拆分组件: 拆分界面,抽取组件</p>
+</li>
+<li><p>实现静态组件: 使用组件实现静态页面效果</p>
+</li>
+<li><p>实现动态组件</p>
+</li>
+</ol>
+<p>​    3.1 动态显示初始化数据</p>
+<p>​        3.1.1 数据类型</p>
+<p>​        3.1.2 数据名称</p>
+<p>​        3.1.2 保存在哪个组件?</p>
+<p>​    3.2 交互(从绑定事件监听开始)</p>
+</blockquote>
+<h3 id="4、TodoList部分代码"><a href="#4、TodoList部分代码" class="headerlink" title="4、TodoList部分代码"></a>4、TodoList部分代码</h3><blockquote>
+<p>1、更新时可以利用赋值解构后再传入重复字段会自动覆盖的方式进行更新数据</p>
+<p>​    –&gt;if(todoObj.id === id) return <code>&#123;...todoObj,done&#125;</code></p>
+<p>2、数组批量删除可以用filter过滤实现</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//updateTodo用于更新一个todo对象</span></span><br><span class="line">updateTodo = <span class="function">(<span class="params">id,done</span>)=&gt;</span>&#123;</span><br><span class="line">		<span class="comment">//获取状态中的todos</span></span><br><span class="line">		<span class="keyword">const</span> &#123;todos&#125; = <span class="built_in">this</span>.state</span><br><span class="line">		<span class="comment">//匹配处理数据</span></span><br><span class="line">		<span class="keyword">const</span> newTodos = todos.map(<span class="function">(<span class="params">todoObj</span>)=&gt;</span>&#123;</span><br><span class="line">			<span class="keyword">if</span>(todoObj.id === id) <span class="keyword">return</span> &#123;...todoObj,done&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">return</span> todoObj</span><br><span class="line">		&#125;)</span><br><span class="line">		<span class="built_in">this</span>.setState(&#123;<span class="attr">todos</span>:newTodos&#125;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//deleteTodo用于删除一个todo对象</span></span><br><span class="line">	deleteTodo = <span class="function">(<span class="params">id</span>)=&gt;</span>&#123;</span><br><span class="line">		<span class="comment">//获取原来的todos</span></span><br><span class="line">		<span class="keyword">const</span> &#123;todos&#125; = <span class="built_in">this</span>.state</span><br><span class="line">		<span class="comment">//删除指定id的todo对象</span></span><br><span class="line">		<span class="keyword">const</span> newTodos = todos.filter(<span class="function">(<span class="params">todoObj</span>)=&gt;</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> todoObj.id !== id</span><br><span class="line">		&#125;)</span><br><span class="line">		<span class="comment">//更新状态</span></span><br><span class="line">		<span class="built_in">this</span>.setState(&#123;<span class="attr">todos</span>:newTodos&#125;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//checkAllTodo用于全选</span></span><br><span class="line">	checkAllTodo = <span class="function">(<span class="params">done</span>)=&gt;</span>&#123;</span><br><span class="line">		<span class="comment">//获取原来的todos</span></span><br><span class="line">		<span class="keyword">const</span> &#123;todos&#125; = <span class="built_in">this</span>.state</span><br><span class="line">		<span class="comment">//加工数据</span></span><br><span class="line">		<span class="keyword">const</span> newTodos = todos.map(<span class="function">(<span class="params">todoObj</span>)=&gt;</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> &#123;...todoObj,done&#125;</span><br><span class="line">		&#125;)</span><br><span class="line">		<span class="comment">//更新状态</span></span><br><span class="line">		<span class="built_in">this</span>.setState(&#123;<span class="attr">todos</span>:newTodos&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Kun Kun</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ma_jinkun.gitee.io/2021/12/30/react/react-cycle/">https://ma_jinkun.gitee.io/2021/12/30/react/react-cycle/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ma_jinkun.gitee.io" target="_blank">小马の博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/React-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F-%E8%84%9A%E6%89%8B%E6%9E%B6/">React 生命周期 脚手架</a></div><div class="post_share"><div class="social-share" data-image="[&quot;https://s2.loli.net/2021/12/30/OjiswQgfeP3Jm4S.jpg&quot;]" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/12/30/react/react-proxy/"><img class="prev-cover" src="[&quot;https://s2.loli.net/2021/12/30/OjiswQgfeP3Jm4S.jpg&quot;]" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">React 配置代理</div></div></a></div><div class="next-post pull-right"><a href="/2021/12/30/react/react-two/"><img class="next-cover" src="[&quot;https://s2.loli.net/2021/12/30/OjiswQgfeP3Jm4S.jpg&quot;]" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">React第二天(组件三大属性)</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2021/12/28/uBIDZUEFrpsCvH7.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Kun Kun</div><div class="author-info__description">嘘,别看,眼睛会疼！</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xxxxx" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:2583931485@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="qq:2583931485" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">基于Hexo 主题butterfly 开发的</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.</span> <span class="toc-text">五、生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81React-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F-%E6%97%A7"><span class="toc-number">1.1.</span> <span class="toc-text">1、React 生命周期(旧)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81React-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F-%E6%96%B0"><span class="toc-number">1.2.</span> <span class="toc-text">2、React 生命周期(新)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E9%87%8D%E8%A6%81%E7%9A%84%E9%92%A9%E5%AD%90"><span class="toc-number">1.3.</span> <span class="toc-text">3、重要的钩子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E5%8D%B3%E5%B0%86%E5%BA%9F%E5%BC%83%E7%9A%84%E9%92%A9%E5%AD%90"><span class="toc-number">1.4.</span> <span class="toc-text">4、即将废弃的钩子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81react-vue-%E4%B8%AD%E7%9A%84-key"><span class="toc-number">2.</span> <span class="toc-text">六、react&#x2F;vue 中的 key</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A0-%E8%99%9A%E6%8B%9F-DOM-%E4%B8%AD-key-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.0.0.1.</span> <span class="toc-text">① 虚拟 DOM 中 key 的作用:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A1-%E7%94%A8-index-%E4%BD%9C%E4%B8%BA-key-%E5%8F%AF%E8%83%BD%E4%BC%9A%E5%BC%95%E5%8F%91%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.0.0.2.</span> <span class="toc-text">② 用 index 作为 key 可能会引发的问题:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A2-%E5%BC%80%E5%8F%91%E4%B8%AD%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9-key"><span class="toc-number">2.0.0.3.</span> <span class="toc-text">③ 开发中如何选择 key?</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E2%85%A1-React%E8%84%9A%E6%89%8B%E6%9E%B6"><span class="toc-number"></span> <span class="toc-text">Ⅱ-React脚手架</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E5%B9%B6%E5%90%AF%E5%8A%A8"><span class="toc-number">0.1.</span> <span class="toc-text">1、创建项目并启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81react%E8%84%9A%E6%89%8B%E6%9E%B6%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-number">0.2.</span> <span class="toc-text">2、react脚手架项目结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E5%8A%9F%E8%83%BD%E7%95%8C%E9%9D%A2%E7%9A%84%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A0%81%E6%B5%81%E7%A8%8B"><span class="toc-number">0.3.</span> <span class="toc-text">3、功能界面的组件化编码流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81TodoList%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81"><span class="toc-number">0.4.</span> <span class="toc-text">4、TodoList部分代码</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/12/30/react/react-proxy/" title="React 配置代理"><img src="[&quot;https://s2.loli.net/2021/12/30/OjiswQgfeP3Jm4S.jpg&quot;]" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="React 配置代理"/></a><div class="content"><a class="title" href="/2021/12/30/react/react-proxy/" title="React 配置代理">React 配置代理</a><time datetime="2021-12-30T02:14:13.000Z" title="发表于 2021-12-30 10:14:13">2021-12-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/30/react/react-cycle/" title="React(生命周期,脚手架)"><img src="[&quot;https://s2.loli.net/2021/12/30/OjiswQgfeP3Jm4S.jpg&quot;]" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="React(生命周期,脚手架)"/></a><div class="content"><a class="title" href="/2021/12/30/react/react-cycle/" title="React(生命周期,脚手架)">React(生命周期,脚手架)</a><time datetime="2021-12-30T01:58:45.000Z" title="发表于 2021-12-30 09:58:45">2021-12-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/30/react/react-two/" title="React第二天(组件三大属性)"><img src="[&quot;https://s2.loli.net/2021/12/30/OjiswQgfeP3Jm4S.jpg&quot;]" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="React第二天(组件三大属性)"/></a><div class="content"><a class="title" href="/2021/12/30/react/react-two/" title="React第二天(组件三大属性)">React第二天(组件三大属性)</a><time datetime="2021-12-30T01:49:08.000Z" title="发表于 2021-12-30 09:49:08">2021-12-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/29/react/React-one/" title="React学习"><img src="[&quot;https://s2.loli.net/2021/12/30/OjiswQgfeP3Jm4S.jpg&quot;]" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="React学习"/></a><div class="content"><a class="title" href="/2021/12/29/react/React-one/" title="React学习">React学习</a><time datetime="2021-12-29T09:24:15.000Z" title="发表于 2021-12-29 17:24:15">2021-12-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/29/hexo-Write/" title="如何用hexo写文章"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何用hexo写文章"/></a><div class="content"><a class="title" href="/2021/12/29/hexo-Write/" title="如何用hexo写文章">如何用hexo写文章</a><time datetime="2021-12-29T03:23:35.000Z" title="发表于 2021-12-29 11:23:35">2021-12-29</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Kun Kun</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://python-github-calendar-api.vercel.app/api?xioama";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="xioama";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function history_calendar_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-history"><div class="card-content"><div class="item-headline"><i class="fas fa-clock fa-spin"></i><span>那年今日</span></div><div id="history-baidu" style="height: 100px;overflow: hidden"><div class="history_swiper-container" id="history-container" style="width: 100%;height: 100%"><div class="swiper-wrapper" id="history_container_wrapper" style="height:20px"></div></div></div></div>';
+                console.log('已挂载history_calendar')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            history_calendar_injector_config()
+        } </script><script data-pjax  src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script><script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-card-history/baiduhistory/js/main.js"></script><!-- hexo injector body_end end --></body></html>
